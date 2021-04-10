@@ -26,6 +26,7 @@ func (c *Client) NewRequest(method, urlstr string) (*Request, error) {
 	req.Header.Add("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
 	return (*Request)(req), nil
+	//
 	// u, err := url.Parse(urlstr)
 	// if err != nil {
 	// 	return nil, err
@@ -40,8 +41,5 @@ func (c *Client) NewRequest(method, urlstr string) (*Request, error) {
 	// req.Header.Set("Content-Type", "application/json")
 	// req.Header.Set("portal-dest", u.Host)
 	// req.Header.Set("portal-host", c.NetPortal.Domain)
-
-	// byts, _ := httputil.DumpRequest(req, false)
-	// fmt.Println(string(byts))
 	// return (*Request)(req), nil
 }
