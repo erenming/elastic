@@ -14,7 +14,7 @@ type DateHistogramAggregation struct {
 	subAggregations map[string]Aggregation
 	meta            map[string]interface{}
 
-	interval          string
+	interval          interface{}
 	order             string
 	orderAsc          bool
 	minDocCount       *int64
@@ -22,7 +22,7 @@ type DateHistogramAggregation struct {
 	extendedBoundsMax interface{}
 	timeZone          string
 	format            string
-	offset            string
+	offset            interface{}
 	keyed             *bool
 }
 
@@ -65,7 +65,7 @@ func (a *DateHistogramAggregation) Meta(metaData map[string]interface{}) *DateHi
 // Allowed values are: "year", "quarter", "month", "week", "day",
 // "hour", "minute". It also supports time settings like "1.5h"
 // (up to "w" for weeks).
-func (a *DateHistogramAggregation) Interval(interval string) *DateHistogramAggregation {
+func (a *DateHistogramAggregation) Interval(interval interface{}) *DateHistogramAggregation {
 	a.interval = interval
 	return a
 }
@@ -171,7 +171,7 @@ func (a *DateHistogramAggregation) Format(format string) *DateHistogramAggregati
 }
 
 // Offset sets the offset of time intervals in the histogram, e.g. "+6h".
-func (a *DateHistogramAggregation) Offset(offset string) *DateHistogramAggregation {
+func (a *DateHistogramAggregation) Offset(offset interface{}) *DateHistogramAggregation {
 	a.offset = offset
 	return a
 }

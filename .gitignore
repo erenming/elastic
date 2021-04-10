@@ -31,7 +31,6 @@ _testmain.go
 /cluster-test/*.log
 /cluster-test/es-chaos-monkey
 /dist
-/go.mod
 /go.sum
 /spec
 /tmp

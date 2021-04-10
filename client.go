@@ -108,7 +108,8 @@ type ClientOptionFunc func(*Client) error
 
 // Client is an Elasticsearch client. Create one by calling NewClient.
 type Client struct {
-	c *http.Client // net/http Client to use for requests
+	NetPortal *NetPortal
+	c         *http.Client // net/http Client to use for requests
 
 	connsMu sync.RWMutex // connsMu guards the next block
 	conns   []*conn      // all connections
@@ -957,7 +958,7 @@ func (c *Client) sniffNode(ctx context.Context, url string) []*conn {
 	var nodes []*conn
 
 	// Call the Nodes Info API at /_nodes/http
-	req, err := NewRequest("GET", url+"/_nodes/http")
+	req, err := c.NewRequest("GET", url+"/_nodes/http")
 	if err != nil {
 		return nodes
 	}
@@ -1096,7 +1097,7 @@ func (c *Client) healthcheck(parentCtx context.Context, timeout time.Duration, f
 		var status int
 		errc := make(chan error, 1)
 		go func(url string) {
-			req, err := NewRequest("HEAD", url)
+			req, err := c.NewRequest("HEAD", url)
 			if err != nil {
 				errc <- err
 				return
@@ -1151,10 +1152,11 @@ func (c *Client) startupHealthcheck(parentCtx context.Context, timeout time.Dura
 	done := false
 	for !done {
 		for _, url := range urls {
-			req, err := http.NewRequest("HEAD", url, nil)
+			request, err := c.NewRequest("HEAD", url)
 			if err != nil {
 				return err
 			}
+			req := (*http.Request)(request)
 			if basicAuth {
 				req.SetBasicAuth(basicAuthUsername, basicAuthPassword)
 			}
@@ -1325,7 +1327,7 @@ func (c *Client) PerformRequest(ctx context.Context, opt PerformRequestOptions) 
 			return nil, err
 		}
 
-		req, err = NewRequest(opt.Method, conn.URL()+pathWithParams)
+		req, err = c.NewRequest(opt.Method, conn.URL()+pathWithParams)
 		if err != nil {
 			c.errorf("elastic: cannot create request for %s %s: %v", strings.ToUpper(opt.Method), conn.URL()+pathWithParams, err)
 			return nil, err
