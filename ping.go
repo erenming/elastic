@@ -152,7 +152,7 @@ func (s *PingService) Do(ctx context.Context) (*PingResult, int, error) {
 	}
 
 	// Notice: This service must NOT use PerformRequest!
-	req, err := NewRequest(method, url_)
+	req, err := s.client.NewRequest(method, url_)
 	if err != nil {
 		return nil, 0, err
 	}
