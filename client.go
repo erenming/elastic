@@ -108,8 +108,9 @@ type ClientOptionFunc func(*Client) error
 
 // Client is an Elasticsearch client. Create one by calling NewClient.
 type Client struct {
-	NetPortal *NetPortal
-	c         *http.Client // net/http Client to use for requests
+	// NetPortal      *NetPortal
+	RequestBuilder RequestBuilder
+	c              *http.Client // net/http Client to use for requests
 
 	connsMu sync.RWMutex // connsMu guards the next block
 	conns   []*conn      // all connections
@@ -948,6 +949,17 @@ func (c *Client) sniff(parentCtx context.Context, timeout time.Duration) error {
 			return errors.Wrap(ErrNoClient, "sniff timeout")
 		}
 	}
+}
+
+func (c *Client) NewRequest(method, url string) (*Request, error) {
+	var req *Request
+	var err error
+	if c.RequestBuilder != nil {
+		req, err = c.RequestBuilder(method, url)
+	} else {
+		req, err = NewRequest(method, url)
+	}
+	return req, err
 }
 
 // sniffNode sniffs a single node. This method is run as a goroutine

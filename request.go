@@ -15,6 +15,8 @@ import (
 	"strings"
 )
 
+type RequestBuilder func(method, url string) (*Request, error)
+
 // Elasticsearch-specific HTTP request
 type Request http.Request
 
