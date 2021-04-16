@@ -108,7 +108,6 @@ type ClientOptionFunc func(*Client) error
 
 // Client is an Elasticsearch client. Create one by calling NewClient.
 type Client struct {
-	// NetPortal      *NetPortal
 	RequestBuilder RequestBuilder
 	c              *http.Client // net/http Client to use for requests
 
