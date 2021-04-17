@@ -32,6 +32,7 @@ _testmain.go
 /cluster-test/es-chaos-monkey
 /dist
 /go.sum
+/go.mod
 /spec
 /tmp
 /CHANGELOG-3.0.html
