@@ -1,4 +1,4 @@
-module github.com/olivere/elastic
+module github.com/olivere/elastic/v6
 
 go 1.14
 
